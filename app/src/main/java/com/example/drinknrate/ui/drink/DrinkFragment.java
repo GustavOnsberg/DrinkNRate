@@ -1,4 +1,4 @@
-package com.example.drinknrate.ui.notifications;
+package com.example.drinknrate.ui.drink;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.drinknrate.R;
 
-public class NotificationsFragment extends Fragment {
+public class DrinkFragment extends Fragment {
 
-    private NotificationsViewModel notificationsViewModel;
+    private DrinkViewModel drinkViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        notificationsViewModel =
-                ViewModelProviders.of(this).get(NotificationsViewModel.class);
+        drinkViewModel =
+                ViewModelProviders.of(this).get(DrinkViewModel.class);
         View root = inflater.inflate(R.layout.fragment_drink, container, false);
         final TextView textView = root.findViewById(R.id.text_notifications);
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        drinkViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

@@ -1,14 +1,14 @@
-package com.example.drinknrate.ui.notifications;
+package com.example.drinknrate.ui.drink;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class NotificationsViewModel extends ViewModel {
+public class DrinkViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public NotificationsViewModel() {
+    public DrinkViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is notifications fragment");
     }

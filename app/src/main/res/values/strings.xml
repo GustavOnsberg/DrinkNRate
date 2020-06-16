@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">DrinkNRate</string>
     <string name="title_activity_scanner">MainActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_home">Input</string>
+    <string name="title_dashboard">Scan</string>
+    <string name="title_notifications">Drink</string>
 </resources>

@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.drinknrate.ui.home.HomeFragment"
+        android:name="com.example.drinknrate.ui.input.InputFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_input" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.drinknrate.ui.dashboard.DashboardFragment"
+        android:name="com.example.drinknrate.ui.scan.ScanFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_scan" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.drinknrate.ui.notifications.NotificationsFragment"
+        android:name="com.example.drinknrate.ui.drink.DrinkFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_drink" />
 </navigation>
