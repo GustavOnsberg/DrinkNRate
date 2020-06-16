@@ -40,5 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendNumber(View v){
         Log.i("intput", "onClick: button was clicked");
+        
     }
 }
