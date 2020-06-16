@@ -23,7 +23,7 @@ public class InputFragment extends Fragment {
         inputViewModel =
                 ViewModelProviders.of(this).get(InputViewModel.class);
         View root = inflater.inflate(R.layout.fragment_input, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
+        final TextView textView = root.findViewById(R.id.text_input);
         inputViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {

@@ -23,7 +23,7 @@ public class DrinkFragment extends Fragment {
         drinkViewModel =
                 ViewModelProviders.of(this).get(DrinkViewModel.class);
         View root = inflater.inflate(R.layout.fragment_drink, container, false);
-        final TextView textView = root.findViewById(R.id.text_notifications);
+        final TextView textView = root.findViewById(R.id.text_drink);
         drinkViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
