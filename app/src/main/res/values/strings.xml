@@ -4,4 +4,7 @@
     <string name="title_input">Input</string>
     <string name="title_scan">Scan</string>
     <string name="title_drink">Drink</string>
+    <string name="add_description">Add Description</string>
+    <string name="barcode_number">Barcode-number</string>
+    <string name="submit">Submit</string>
 </resources>
