@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "272536895160",
+    "firebase_url": "https://drinknrate.firebaseio.com",
+    "project_id": "drinknrate",
+    "storage_bucket": "drinknrate.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:272536895160:android:c7b77541779758c07a3e4d",
+        "android_client_info": {
+          "package_name": "com.example.drinknrate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "272536895160-86vcr6dhrgh16ojc3oi7u1suocnemfse.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.drinknrate",
+            "certificate_hash": "a964d9f337895194b454e91eb369f4aacf70bb10"
+          }
+        },
+        {
+          "client_id": "272536895160-7ru7cdsj5l3lmtdnmq7ehiqv9jmamqk3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3-1dOWl69Q_Xf1qbO4fWXTCps8S_bgVE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "272536895160-7ru7cdsj5l3lmtdnmq7ehiqv9jmamqk3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
