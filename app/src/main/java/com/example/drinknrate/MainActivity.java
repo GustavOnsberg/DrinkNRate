@@ -39,6 +39,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendNumber(View v){
+        EditText editText = (EditText) findViewById(R.id.inputNumber);
+        String barcodeNumber = editText.getText().toString();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference rating = database.getReference(barcodeNumber+"/rating");
+        rating.setValue(5+"");
+        DatabaseReference description = database.getReference(barcodeNumber+"/description");
+        description.setValue("good beer");
+        DatabaseReference title = database.getReference(barcodeNumber+"/title");
+        title.setValue("beer name");
         Log.i("intput", "onClick: button was clicked");
         
     }
