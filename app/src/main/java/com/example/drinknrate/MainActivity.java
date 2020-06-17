@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -109,6 +110,8 @@ public class MainActivity extends AppCompatActivity {
             Uri image = data.getData();
             ImageView imageView = (ImageView) findViewById(R.id.imageView);
             imageView.setImageURI(image);
+            Button imageSelect = (Button) findViewById(R.id.addImageBtn);
+            imageSelect.setVisibility(View.GONE);
         } else if (requestCode == REQUEST_CODE_CREATEDRINK && resultCode == RESULT_OK && data != null) {
             Toast okResult = Toast.makeText(this,"Drink is submitted", Toast.LENGTH_SHORT);
             okResult.show();
