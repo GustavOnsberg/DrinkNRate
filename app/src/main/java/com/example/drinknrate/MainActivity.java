@@ -1,14 +1,19 @@
 package com.example.drinknrate;
 
+import android.content.Intent;
+import android.content.IntentSender;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -16,6 +21,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final int GALLERY_CODE = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +70,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addImage(View v) {
-
+        Intent imageIntent = new Intent();
+        imageIntent.setType("image/*");
+        imageIntent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(imageIntent,"Select Image"), GALLERY_CODE);
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GALLERY_CODE && resultCode == RESULT_OK && data != null) {
+            Uri image = data.getData();
+            ImageView imageView = (ImageView) findViewById(R.id.imageView);
+            imageView.setImageURI(image);
+        }
+    }
 }
