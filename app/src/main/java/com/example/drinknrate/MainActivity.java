@@ -1,19 +1,21 @@
 package com.example.drinknrate;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -23,6 +25,7 @@ import androidx.navigation.ui.NavigationUI;
 public class MainActivity extends AppCompatActivity {
 
     private static final int GALLERY_CODE = 10;
+    private static final int REQUEST_CODE_CREATEDRINK = 69;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,16 +49,38 @@ public class MainActivity extends AppCompatActivity {
     //onClick methods
 
     public void sendNumber(View v){
-        EditText editText = (EditText) findViewById(R.id.inputNumber);
-        String barcodeNumber = editText.getText().toString();
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference rating = database.getReference(barcodeNumber+"/rating");
-        rating.setValue(5+"");
-        DatabaseReference description = database.getReference(barcodeNumber+"/description");
-        description.setValue("good beer");
-        DatabaseReference title = database.getReference(barcodeNumber+"/title");
-        title.setValue("beer name");
         Log.i("intput", "onClick: button was clicked");
+        final EditText editText = (EditText) findViewById(R.id.inputNumber);
+        final String barcodeNumber = editText.getText().toString();
+        if (false) {
+            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference rating = database.getReference(barcodeNumber+"/rating");
+            rating.setValue(5+"");
+            DatabaseReference description = database.getReference(barcodeNumber+"/description");
+            description.setValue("good beer");
+            DatabaseReference title = database.getReference(barcodeNumber+"/title");
+            title.setValue("beer name");
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Create new drink?")
+                    .setMessage("Please make sure the numbers are correct")
+                    .setPositiveButton("Create", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent createDrink = new Intent(getBaseContext(), CreateDrinkActivity.class);
+                    createDrink.putExtra("barNumber",editText.getText().toString());
+                    startActivityForResult(createDrink,REQUEST_CODE_CREATEDRINK);
+                }
+            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+
     }
 
     public void setDesc(View v){
@@ -69,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         dialogChangeDescFragment.show(getSupportFragmentManager(),"changeTheDescription");
     }
 
+    //add image to imageview
     public void addImage(View v) {
         Intent imageIntent = new Intent();
         imageIntent.setType("image/*");
@@ -83,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
             Uri image = data.getData();
             ImageView imageView = (ImageView) findViewById(R.id.imageView);
             imageView.setImageURI(image);
+        } else if (requestCode == REQUEST_CODE_CREATEDRINK && resultCode == RESULT_OK && data != null) {
+            Toast okResult = Toast.makeText(this,"Drink is submitted", Toast.LENGTH_SHORT);
+            okResult.show();
         }
     }
 }

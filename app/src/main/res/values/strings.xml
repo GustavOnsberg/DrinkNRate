@@ -10,4 +10,6 @@
     <string name="change_description">Change Description</string>
     <string name="add_image">Add Image</string>
     <string name="description">Description</string>
+    <string name="title">Title</string>
+    <string name="create_new_drink">Create new drink</string>
 </resources>
