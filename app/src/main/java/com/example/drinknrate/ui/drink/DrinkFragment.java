@@ -4,18 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.drinknrate.DialogFragment;
-import com.example.drinknrate.MainActivity;
 import com.example.drinknrate.R;
-
-import java.util.Objects;
 
 public class DrinkFragment extends Fragment {
 

@@ -8,14 +8,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,13 +35,26 @@ public class MainActivity extends AppCompatActivity {
         myRef.setValue("Hello, World!");
     }
 
+    //onClick methods
+
     public void sendNumber(View v){
         Log.i("intput", "onClick: button was clicked");
     }
 
     public void setDesc(View v){
         Log.i("drink", "onClick: desc");
-        DialogFragment dialogFragment = new DialogFragment();
-        dialogFragment.show(getSupportFragmentManager(),"setTheDescription");
+        DialogSetDescFragment dialogSetDescFragment = new DialogSetDescFragment();
+        dialogSetDescFragment.show(getSupportFragmentManager(),"dialogSetDesc");
     }
+
+    public void changeDesc(View v) {
+        DialogChangeDescFragment dialogChangeDescFragment = new DialogChangeDescFragment();
+        dialogChangeDescFragment.show(getSupportFragmentManager(),"changeTheDescription");
+    }
+
+    public void addImage(View v) {
+
+    }
+
+
 }
