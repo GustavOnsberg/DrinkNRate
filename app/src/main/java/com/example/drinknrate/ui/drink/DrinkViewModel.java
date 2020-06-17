@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModel;
 public class DrinkViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
-    private String desc = "";
 
     public DrinkViewModel() {
         mText = new MutableLiveData<>();

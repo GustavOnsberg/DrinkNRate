@@ -3,8 +3,6 @@ package com.example.drinknrate;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
@@ -35,8 +33,9 @@ public class MainActivity extends AppCompatActivity {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("message");
         myRef.setValue("Hello, World!");
-
     }
+
+    //onClick methods
 
     public void sendNumber(View v){
         EditText editText = (EditText) findViewById(R.id.inputNumber);
@@ -49,6 +48,22 @@ public class MainActivity extends AppCompatActivity {
         DatabaseReference title = database.getReference(barcodeNumber+"/title");
         title.setValue("beer name");
         Log.i("intput", "onClick: button was clicked");
-        
     }
+
+    public void setDesc(View v){
+        Log.i("drink", "onClick: desc");
+        DialogSetDescFragment dialogSetDescFragment = new DialogSetDescFragment();
+        dialogSetDescFragment.show(getSupportFragmentManager(),"dialogSetDesc");
+    }
+
+    public void changeDesc(View v) {
+        DialogChangeDescFragment dialogChangeDescFragment = new DialogChangeDescFragment();
+        dialogChangeDescFragment.show(getSupportFragmentManager(),"changeTheDescription");
+    }
+
+    public void addImage(View v) {
+
+    }
+
+
 }

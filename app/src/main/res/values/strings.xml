@@ -7,4 +7,7 @@
     <string name="add_description">Add Description</string>
     <string name="barcode_number">Barcode-number</string>
     <string name="submit">Submit</string>
+    <string name="change_description">Change Description</string>
+    <string name="add_image">Add Image</string>
+    <string name="description">Description</string>
 </resources>
