@@ -3,18 +3,19 @@ package com.example.drinknrate;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,11 +36,15 @@ public class MainActivity extends AppCompatActivity {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("message");
         myRef.setValue("Hello, World!");
-
     }
 
     public void sendNumber(View v){
         Log.i("intput", "onClick: button was clicked");
-        
+    }
+
+    public void setDesc(View v){
+        Log.i("drink", "onClick: desc");
+        DialogFragment dialogFragment = new DialogFragment();
+        dialogFragment.show(getSupportFragmentManager(),"setTheDescription");
     }
 }
