@@ -33,7 +33,8 @@ public class CreateDrinkActivity extends AppCompatActivity {
         if (title.getText().toString().length() > 0) {
             data.putExtra("description", description.getText().toString());
             data.putExtra("title",title.getText().toString());
-            data.putExtra("rating",rating.getId());
+            data.putExtra("rating",rating.getRating());
+            System.out.println(rating.getRating());
             setResult(Activity.RESULT_OK,data);
             finish();
         } else {
