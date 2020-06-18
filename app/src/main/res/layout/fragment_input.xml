@@ -11,10 +11,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:fontFamily="@font/nunito_regular"
         android:hint="@string/barcode_number"
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,5 +33,6 @@
         app:layout_constraintTop_toBottomOf="@+id/inputNumber"
         app:layout_constraintVertical_bias="0.237"
         android:background="@drawable/custom_button"
-        android:textColor="#ffffff"/>
+        android:textColor="#ffffff"
+        android:fontFamily="@font/nunito_bold"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
