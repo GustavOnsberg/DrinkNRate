@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                         float rating = Float.parseFloat(dataSnapshot.child("rating").getValue().toString());
                         Log.i("ondatachange", "onDataChange: "+title+" "+description+" "+rating);
                     }catch (Exception e){
-                        createNewDialog();
+                        createNewDrinkDialog();
                     }
                 }
 
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void createNewDialog() {
+    private void createNewDrinkDialog() {
         final EditText editText = (EditText) findViewById(R.id.inputNumber);
         final String barcodeNumber = editText.getText().toString();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
