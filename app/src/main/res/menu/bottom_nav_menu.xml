@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/navigation_input"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_baseline_keyboard_24"
         android:title="@string/title_input" />
 
     <item
         android:id="@+id/navigation_scan"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/ic_baseline_camera_alt_24"
         android:title="@string/title_scan" />
 
     <item
         android:id="@+id/navigation_drink"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/ic_baseline_local_drink_24"
         android:title="@string/title_drink" />
 
 </menu>
