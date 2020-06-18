@@ -53,26 +53,34 @@ public class MainActivity extends AppCompatActivity {
         Log.i("intput", "onClick: button was clicked");
         final EditText editText = (EditText) findViewById(R.id.inputNumber);
         final String barcodeNumber = editText.getText().toString();
-        if (false) {
-            final FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference rating = database.getReference(barcodeNumber+"/rating");
-            rating.setValue(5+"");
-            DatabaseReference description = database.getReference(barcodeNumber+"/description");
-            description.setValue("good beer");
-            DatabaseReference title = database.getReference(barcodeNumber+"/title");
-            title.setValue("beer name");
-        } else {
+        if (14 > barcodeNumber.length() && barcodeNumber.length() > 7) {
+            if (false) {
+                //get drink from database
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Create new drink?")
+                        .setMessage("Please make sure the numbers are correct")
+                        .setPositiveButton("Create", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent createDrink = new Intent(getBaseContext(), CreateDrinkActivity.class);
+                                createDrink.putExtra("barNumber",editText.getText().toString());
+                                startActivityForResult(createDrink,REQUEST_CODE_CREATEDRINK);
+                            }
+                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        } else{
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Create new drink?")
-                    .setMessage("Please make sure the numbers are correct")
-                    .setPositiveButton("Create", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent createDrink = new Intent(getBaseContext(), CreateDrinkActivity.class);
-                    createDrink.putExtra("barNumber",editText.getText().toString());
-                    startActivityForResult(createDrink,REQUEST_CODE_CREATEDRINK);
-                }
-            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            builder.setTitle("Wrong input length")
+                    .setMessage("Barcode numbers are between 8 and 13 characters.")
+                    .setNegativeButton("ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -81,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog dialog = builder.create();
             dialog.show();
         }
+
 
     }
 
