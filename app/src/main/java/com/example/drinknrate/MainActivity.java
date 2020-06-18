@@ -12,19 +12,23 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.solver.widgets.Snapshot;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
-
     private static final int GALLERY_CODE = 10;
     private static final int REQUEST_CODE_CREATEDRINK = 69;
 
@@ -43,39 +47,39 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
         //database test
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
-        myRef.setValue("Hello, World!");
+        DatabaseReference ref = database.getReference("");
+
     }
 
     //onClick methods
 
     public void sendNumber(View v){
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+
         Log.i("intput", "onClick: button was clicked");
         final EditText editText = (EditText) findViewById(R.id.inputNumber);
         final String barcodeNumber = editText.getText().toString();
+        final DatabaseReference ref = database.getReference(barcodeNumber);
         if (14 > barcodeNumber.length() && barcodeNumber.length() > 7) {
-            if (false) {
-                //get drink from database
-            } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Create new drink?")
-                        .setMessage("Please make sure the numbers are correct")
-                        .setPositiveButton("Create", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent createDrink = new Intent(getBaseContext(), CreateDrinkActivity.class);
-                                createDrink.putExtra("barNumber",editText.getText().toString());
-                                startActivityForResult(createDrink,REQUEST_CODE_CREATEDRINK);
-                            }
-                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    try {
+                        String title = dataSnapshot.child("title").getValue().toString();
+                        String description = dataSnapshot.child("description").getValue().toString();
+                        float rating = Float.parseFloat(dataSnapshot.child("rating").getValue().toString());
+                        Log.i("ondatachange", "onDataChange: "+title+" "+description+" "+rating);
+                    }catch (Exception e){
+                        createNewDialog();
                     }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
         } else{
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Wrong input length")
@@ -91,6 +95,29 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    private void createNewDialog() {
+        final EditText editText = (EditText) findViewById(R.id.inputNumber);
+        final String barcodeNumber = editText.getText().toString();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Create new drink?")
+                .setMessage("Please make sure the numbers are correct")
+                .setPositiveButton("Create", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent createDrink = new Intent(getBaseContext(), CreateDrinkActivity.class);
+                        createDrink.putExtra("barNumber",editText.getText().toString());
+                        startActivityForResult(createDrink,REQUEST_CODE_CREATEDRINK);
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     public void setDesc(View v){
