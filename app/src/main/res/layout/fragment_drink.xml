@@ -7,13 +7,32 @@
     android:layout_height="match_parent"
     tools:context=".ui.input.InputFragment">
 
-    <TextView
-        android:id="@+id/drinkDesc"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
+    <ScrollView
+        android:id="@+id/scrollDrinkRatings"
+        android:layout_width="409dp"
+        android:layout_height="255dp"
+        android:layout_marginTop="64dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/drinkDesc"
+        app:layout_constraintVertical_bias="1.0">
+
+        <LinearLayout
+            android:id="@+id/drinkRatings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/drinkDesc"
+        android:layout_width="199dp"
+        android:layout_height="105dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.081"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         app:layout_constraintVertical_bias="0.0"
@@ -30,60 +49,51 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        tools:src="@tools:sample/backgrounds/scenic" />
-
-    <ScrollView
-        android:id="@+id/scrollDrinkRatings"
-        android:layout_width="409dp"
-        android:layout_height="331dp"
-        android:layout_marginTop="1dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/drinkDesc">
-
-        <LinearLayout
-            android:id="@+id/drinkRatings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
+        tools:src="@tools:sample/backgrounds/scenic"
+        />
 
     <Button
         android:id="@+id/addDescButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="120dp"
+        android:background="@drawable/custom_button"
         android:onClick="setDesc"
         android:text="@string/add_description"
-        app:layout_constraintBottom_toBottomOf="@+id/drinkDesc"
-        app:layout_constraintEnd_toEndOf="@+id/drinkDesc"
-        app:layout_constraintHorizontal_bias="0.996"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="@+id/scrollDrinkRatings"
         app:layout_constraintStart_toStartOf="@+id/drinkDesc"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/addImageBtn"
+        app:layout_constraintVertical_bias="0.298" />
 
     <Button
         android:id="@+id/changeDesc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="161dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="208dp"
+        android:background="@drawable/custom_button"
         android:onClick="changeDesc"
         android:text="@string/change_description"
+        android:textColor="#ffffff"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/drinkDesc"
-        app:layout_constraintEnd_toEndOf="@+id/drinkDesc"
-        app:layout_constraintHorizontal_bias="0.996"
         app:layout_constraintStart_toStartOf="@+id/drinkDesc"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/addImageBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="addImage"
+        android:background="@drawable/custom_button"
         android:text="@string/add_image"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.534" />
+        app:layout_constraintVertical_bias="0.534"
+        android:textColor="#ffffff"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

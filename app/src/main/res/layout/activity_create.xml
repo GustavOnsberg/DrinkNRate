@@ -70,7 +70,9 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ratingBar"
-        android:onClick="submitDrink"/>
+        android:onClick="submitDrink"
+        android:background="@drawable/custom_button"
+        android:textColor="#ffffff"/>
 
     <TextView
         android:id="@+id/barcode"
