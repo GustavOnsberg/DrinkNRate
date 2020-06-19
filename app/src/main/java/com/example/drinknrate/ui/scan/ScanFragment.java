@@ -38,6 +38,10 @@ public class ScanFragment extends Fragment {
     private TextView barcodeText;
     private String barcodeData;
 
+    private int scanCounter = 0;
+    private int scanTarget = 10;
+    private String scaned = "";
+
 
     private static final int REQUEST_CAMERA_PERMISSION = 13;
 
@@ -135,8 +139,14 @@ public class ScanFragment extends Fragment {
                         @Override
                         public void run(){
                                 barcodeData = barcode.valueAt(0).displayValue;
-                                barcodeText.setText(barcodeData);
-
+                                if(barcodeData.equals(scaned)){
+                                    scanCounter++;
+                                }
+                                else{
+                                    scaned = barcodeData;
+                                    scanCounter = 0;
+                                }
+                                barcodeText.setText(scanCounter + " / " + scanTarget);
                             }
 
                     });
