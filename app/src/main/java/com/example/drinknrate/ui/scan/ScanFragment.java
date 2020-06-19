@@ -32,7 +32,6 @@ public class ScanFragment extends Fragment {
     private BarcodeDetector barcodeDetector;
     private CameraSource cameraSource;
     private SurfaceView surfaceView;
-    private TextView barcodeText;
     private ProgressBar progressBar;
     private String barcodeData;
 
@@ -60,7 +59,6 @@ public class ScanFragment extends Fragment {
 
 
         surfaceView = root.findViewById(R.id.surface_view);
-        barcodeText = root.findViewById(R.id.barcode_text);
         progressBar = root.findViewById(R.id.progress_bar);
         progressBar.setMax(scanTarget);
 
@@ -142,28 +140,12 @@ public class ScanFragment extends Fragment {
                         scaned = barcodeData;
                         scanCounter = 0;
                     }
-                    barcodeText.setText(scanCounter + " / " + scanTarget);
 
                     progressBar.setProgress(scanCounter);
-
-                    barcodeText.post(new Runnable(){
-
-                        @Override
-                        public void run(){
-                                /*barcodeData = barcode.valueAt(0).displayValue;
-                                if(barcodeData.equals(scaned)){
-                                    scanCounter++;
-                                }
-                                else{
-                                    scaned = barcodeData;
-                                    scanCounter = 0;
-                                }
-                                barcodeText.setText(scanCounter + " / " + scanTarget);*/
-                            }
-
-                    });
                 }
-
+                else{
+                    scanCounter = 0;
+                }
             }
         });
 
