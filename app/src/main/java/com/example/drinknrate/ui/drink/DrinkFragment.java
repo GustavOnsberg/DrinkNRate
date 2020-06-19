@@ -1,5 +1,6 @@
 package com.example.drinknrate.ui.drink;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,10 +31,11 @@ public class DrinkFragment extends Fragment {
     private String description;
     private float rating;
     private int totalRatings;
+    private Context mContext;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+                             ViewGroup container, final Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_drink, container, false);
 
         final Button setDesc = root.findViewById(R.id.addDescButton);
@@ -43,7 +45,7 @@ public class DrinkFragment extends Fragment {
         final TextView drinkDesc = root.findViewById(R.id.drinkDesc);
         final TextView drinkName = root.findViewById(R.id.drinkName);
         ImageView image = root.findViewById(R.id.imageView);
-        if (((MainActivity)getActivity()).getDrinkSelected() == -1) {
+        if (((MainActivity)mContext).getDrinkSelected() == -1) {
             setDesc.setVisibility(View.GONE);
             changeDesc.setVisibility(View.GONE);
             setImage.setVisibility(View.GONE);
@@ -63,7 +65,8 @@ public class DrinkFragment extends Fragment {
                     rating = Float.parseFloat(dataSnapshot.child("rating").getValue().toString());
                     totalRatings = Integer.parseInt(dataSnapshot.child("totalRatings").getValue().toString());
 
-                    if (((MainActivity)getActivity()).getDrinkSelected() == 1) {
+
+                    if (((MainActivity)mContext).getDrinkSelected() == 1) {
                         drinkName.setText(title);
                         if (description.length() != 0) {
                             drinkDesc.setText(description);
@@ -89,10 +92,16 @@ public class DrinkFragment extends Fragment {
                 }
             });
         }
-
         drinkViewModel =
                 ViewModelProviders.of(this).get(DrinkViewModel.class);
 
         return root;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+
     }
 }
