@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("message");
         ref.setValue("hello world");
-
     }
 
     //onClick methods

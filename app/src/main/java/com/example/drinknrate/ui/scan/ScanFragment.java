@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.drinknrate.MainActivity;
 import com.example.drinknrate.R;
+import com.example.drinknrate.ui.input.InputViewModel;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -41,6 +42,28 @@ public class ScanFragment extends Fragment {
     private static final int REQUEST_CAMERA_PERMISSION = 13;
 
 
+    private ScanViewModel scanViewModel;
+
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+        scanViewModel =
+                ViewModelProviders.of(this).get(ScanViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_scan, container, false);
+        scanViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+
+            }
+        });
+
+
+        surfaceView = root.findViewById(R.id.surface_view);
+        barcodeText = root.findViewById(R.id.barcode_text);
+
+        initDetsAndSources();
+        return root;
+    }
+/*
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -52,7 +75,7 @@ public class ScanFragment extends Fragment {
 
         initDetsAndSources();
 
-    }
+    }*/
 
     private void initDetsAndSources() {  // initialises detectors and sources
 
