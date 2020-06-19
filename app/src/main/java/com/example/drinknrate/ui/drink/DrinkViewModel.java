@@ -10,9 +10,10 @@ public class DrinkViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
+
     public DrinkViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
+        mText.setValue("No drink selected");
     }
 
     public LiveData<String> getText() {

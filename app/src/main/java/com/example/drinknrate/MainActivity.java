@@ -22,16 +22,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.solver.widgets.Snapshot;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
-    boolean created=false;
+    boolean isDrinkCreated = false;
+    boolean drinkExist = false;
     private static final int GALLERY_CODE = 10;
     private static final int REQUEST_CODE_CREATEDRINK = 69;
+    public int drinkSelected = -1;
+    public String barcodeNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,41 +59,46 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendNumber(View v){//onclick
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        created = false;
+        isDrinkCreated = false;
         Log.i("intput", "onClick: button was clicked");
         final EditText editText = (EditText) findViewById(R.id.inputNumber);
-        final String barcodeNumber = editText.getText().toString();
+        barcodeNumber = editText.getText().toString();
         final DatabaseReference ref = database.getReference(barcodeNumber);
         if (14 > barcodeNumber.length() && barcodeNumber.length() > 7) {
             ref.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     try {
-                        String title = dataSnapshot.child("title").getValue().toString();
-                        String description = dataSnapshot.child("description").getValue().toString();
-                        float rating = Float.parseFloat(dataSnapshot.child("rating").getValue().toString());
-                        Log.i("ondatachange", "onDataChange: "+title+" "+description+" "+rating);
-                        created = true;
-                    }catch (Exception e){
+                        dataSnapshot.child("title").getValue().toString();
+//                        String description = dataSnapshot.child("description").getValue().toString();
+//                        float rating = Float.parseFloat(dataSnapshot.child("rating").getValue().toString());
+//                        Log.i("ondatachange", "onDataChange: "+title+" "+description+" "+rating);
 
-                        if (created == false) {
+                        isDrinkCreated = true;
+                        drinkExist = true;
+                    }catch (Exception e){
+                        if (isDrinkCreated == false) {
                             createNewDrinkDialog();
                         }
-
                     }
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
             });
-
+            if (drinkExist) {
+                drinkSelected = 1;
+                Log.i("onDataChange", "onDataChange: switch window");
+                BottomNavigationView bottomNav = (BottomNavigationView)findViewById(R.id.nav_view);
+                Log.i("onDataChange", "onDataChange: switch button");
+                bottomNav.setSelectedItemId(R.id.navigation_drink);
+            }
         } else{
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Wrong input length")
                     .setMessage("Barcode numbers are between 8 and 13 characters.")
-                    .setNegativeButton("ok", new DialogInterface.OnClickListener() {
+                    .setNegativeButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -99,20 +107,18 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog dialog = builder.create();
             dialog.show();
         }
-
-
     }
 
     private void createNewDrinkDialog() {
         final EditText editText = (EditText) findViewById(R.id.inputNumber);
-        final String barcodeNumber = editText.getText().toString();
+        barcodeNumber = editText.getText().toString();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Create new drink?")
                 .setMessage("Please make sure the numbers are correct")
                 .setPositiveButton("Create", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        created = true;
+                        isDrinkCreated = true;
                         Intent createDrink = new Intent(getBaseContext(), CreateDrinkActivity.class);
                         createDrink.putExtra("barNumber",editText.getText().toString());
                         startActivityForResult(createDrink,REQUEST_CODE_CREATEDRINK);
@@ -159,5 +165,13 @@ public class MainActivity extends AppCompatActivity {
             Toast okResult = Toast.makeText(this,"Drink is submitted", Toast.LENGTH_SHORT);
             okResult.show();
         }
+    }
+
+    public int getDrinkSelected() {
+        return drinkSelected;
+    }
+
+    public String getBarcodeNumber() {
+        return barcodeNumber;
     }
 }

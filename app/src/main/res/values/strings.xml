@@ -12,4 +12,6 @@
     <string name="description">Description</string>
     <string name="title">Title</string>
     <string name="create_new_drink">Create new drink</string>
+    <string name="no_drink_selected">No drink selected</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

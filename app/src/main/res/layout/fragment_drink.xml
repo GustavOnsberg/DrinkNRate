@@ -7,25 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.input.InputFragment">
 
-    <ScrollView
-        android:id="@+id/scrollDrinkRatings"
-        android:layout_width="409dp"
-        android:layout_height="255dp"
-        android:layout_marginTop="64dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/drinkDesc"
-        app:layout_constraintVertical_bias="1.0">
-
-        <LinearLayout
-            android:id="@+id/drinkRatings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
-
     <TextView
         android:id="@+id/drinkDesc"
         android:layout_width="199dp"
@@ -40,39 +21,38 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="411dp"
-        android:layout_height="353dp"
+        android:layout_width="410dp"
+        android:layout_height="308dp"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:src="@tools:sample/backgrounds/scenic"
-        />
+        app:layout_constraintVertical_bias="0.093"
+        tools:src="@tools:sample/backgrounds/scenic" />
 
     <Button
         android:id="@+id/addDescButton"
         android:layout_width="139dp"
         android:layout_height="46dp"
         android:layout_marginStart="116dp"
+        android:layout_marginTop="28dp"
         android:background="@drawable/custom_button"
         android:fontFamily="@font/nunito_bold"
         android:onClick="setDesc"
         android:text="@string/add_description"
         android:textColor="#ffffff"
-        app:layout_constraintBottom_toBottomOf="@+id/scrollDrinkRatings"
         app:layout_constraintStart_toStartOf="@+id/drinkDesc"
-        app:layout_constraintTop_toBottomOf="@+id/addImageBtn"
-        app:layout_constraintVertical_bias="0.298" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <Button
         android:id="@+id/changeDesc"
         android:layout_width="170dp"
         android:layout_height="48dp"
-        android:layout_marginStart="196dp"
+        android:layout_marginStart="208dp"
         android:background="@drawable/custom_button"
+        android:fontFamily="@font/nunito_bold"
         android:onClick="changeDesc"
         android:text="@string/change_description"
         android:textColor="#ffffff"
@@ -80,8 +60,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/drinkDesc"
         app:layout_constraintStart_toStartOf="@+id/drinkDesc"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.0"
-        android:fontFamily="@font/nunito_bold"/>
+        app:layout_constraintVertical_bias="0.473" />
 
     <Button
         android:id="@+id/addImageBtn"
@@ -98,5 +77,29 @@
         app:layout_constraintVertical_bias="0.534"
         android:textColor="#ffffff"
         android:fontFamily="@font/nunito_bold"/>
+
+    <TextView
+        android:id="@+id/drinkName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="11dp"
+        android:fontFamily="@font/nunito_bold"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.041"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <RatingBar
+        android:id="@+id/meanRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.633" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
