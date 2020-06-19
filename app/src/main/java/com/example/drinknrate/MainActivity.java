@@ -29,6 +29,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
+    boolean created=false;
     private static final int GALLERY_CODE = 10;
     private static final int REQUEST_CODE_CREATEDRINK = 69;
 
@@ -47,15 +48,16 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
         //database test
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("");
+        DatabaseReference ref = database.getReference("message");
+        ref.setValue("hello world");
 
     }
 
     //onClick methods
 
-    public void sendNumber(View v){
+    public void sendNumber(View v){//onclick
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-
+        created = false;
         Log.i("intput", "onClick: button was clicked");
         final EditText editText = (EditText) findViewById(R.id.inputNumber);
         final String barcodeNumber = editText.getText().toString();
@@ -69,8 +71,13 @@ public class MainActivity extends AppCompatActivity {
                         String description = dataSnapshot.child("description").getValue().toString();
                         float rating = Float.parseFloat(dataSnapshot.child("rating").getValue().toString());
                         Log.i("ondatachange", "onDataChange: "+title+" "+description+" "+rating);
+                        created = true;
                     }catch (Exception e){
-                        createNewDrinkDialog();
+
+                        if (created == false) {
+                            createNewDrinkDialog();
+                        }
+
                     }
                 }
 
@@ -106,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("Create", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        created = true;
                         Intent createDrink = new Intent(getBaseContext(), CreateDrinkActivity.class);
                         createDrink.putExtra("barNumber",editText.getText().toString());
                         startActivityForResult(createDrink,REQUEST_CODE_CREATEDRINK);
