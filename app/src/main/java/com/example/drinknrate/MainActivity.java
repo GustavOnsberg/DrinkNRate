@@ -55,14 +55,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //onClick methods
+    public String barcode;
 
-    public void sendNumber(View v){//onclick
-        submitDrinkBtnpressed = true;
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        isDrinkCreated = false;
-        Log.i("intput", "onClick: button was clicked");
+    public void sendNumber(View v){
         final EditText editText = (EditText) findViewById(R.id.inputNumber);
-        barcodeNumber = editText.getText().toString();
+        barcode = editText.getText().toString();
+
+        findDrink(v);
+    }
+
+    public void findDrink(View v){//onclick
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        submitDrinkBtnpressed = true;
+        Log.i("intput", "onClick: button was clicked");
+        //final EditText editText = (EditText) findViewById(R.id.inputNumber);
+        //barcodeNumber = editText.getText().toString();
+        barcodeNumber = barcode;
+
         final DatabaseReference ref = database.getReference(barcodeNumber);
         if (14 > barcodeNumber.length() && barcodeNumber.length() > 7) {
             ref.addValueEventListener(new ValueEventListener() {
@@ -70,14 +79,15 @@ public class MainActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     try {
                         dataSnapshot.child("title").getValue().toString();
-//                        String description = dataSnapshot.child("description").getValue().toString();
-//                        float rating = Float.parseFloat(dataSnapshot.child("rating").getValue().toString());
-//                        Log.i("ondatachange", "onDataChange: "+title+" "+description+" "+rating);
+                        String description = dataSnapshot.child("description").getValue().toString();
+                        float rating = Float.parseFloat(dataSnapshot.child("rating").getValue().toString());
+                       //Log.i("ondatachange", "onDataChange: "+title+" "+description+" "+rating);
 
-                        isDrinkCreated = true;
+                        //isDrinkCreated = true;
                         if(submitDrinkBtnpressed) {
                             setDrinkFragment();
                             submitDrinkBtnpressed = false;
+                            Log.i("test", "sendtetg  rsgbdetrh grthNumber: "+barcodeNumber);
                         }
                     }catch (Exception e){
                         if (isDrinkCreated == false) {
@@ -90,34 +100,25 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-
         } else{
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Wrong input length")
                     .setMessage("Barcode numbers are between 8 and 13 characters.")
                     .setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
             AlertDialog dialog = builder.create();
             dialog.show();
         }
     }
 
-    private void setDrinkFragment() {
-        drinkSelected = 1;
-        Log.i("onDataChange", "onDataChange: switch window");
-        BottomNavigationView bottomNav = (BottomNavigationView)findViewById(R.id.nav_view);
-        Log.i("onDataChange", "onDataChange: switch button");
-        bottomNav.setSelectedItemId(R.id.navigation_drink);
-    }
-
-
     private void createNewDrinkDialog() {
         final EditText editText = (EditText) findViewById(R.id.inputNumber);
-        barcodeNumber = editText.getText().toString();
+        //barcodeNumber = editText.getText().toString();
+        barcodeNumber = barcode;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Create new drink?")
                 .setMessage("Please make sure the numbers are correct")
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         isDrinkCreated = true;
                         Intent createDrink = new Intent(getBaseContext(), CreateDrinkActivity.class);
-                        createDrink.putExtra("barNumber",editText.getText().toString());
+                        createDrink.putExtra("barNumber",barcodeNumber);
                         startActivityForResult(createDrink,REQUEST_CODE_CREATEDRINK);
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -138,6 +139,15 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    private void setDrinkFragment() {
+        drinkSelected = 1;
+        Log.i("onDataChange", "onDataChange: switch window");
+        BottomNavigationView bottomNav = (BottomNavigationView)findViewById(R.id.nav_view);
+        Log.i("onDataChange", "onDataChange: switch button");
+        bottomNav.setSelectedItemId(R.id.navigation_drink);
+    }
+
 
     public void setDesc(View v){
         Log.i("drink", "onClick: desc");
