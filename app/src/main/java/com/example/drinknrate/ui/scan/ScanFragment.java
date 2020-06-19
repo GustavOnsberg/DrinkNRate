@@ -84,7 +84,7 @@ public class ScanFragment extends Fragment {
                 .build();
 
         cameraSource = new CameraSource.Builder(getActivity(), barcodeDetector)
-                .setRequestedPreviewSize(1920, 1080)
+                .setRequestedPreviewSize(1024, 1024)
                 .setAutoFocusEnabled(true)
                 .build();
 
@@ -147,47 +147,4 @@ public class ScanFragment extends Fragment {
 
     }
 
-/*
-    @Override
-    protected void onPause(){
-        super.onPause();
-        getSupportActionBar().hide();
-        cameraSource.release();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getSupportActionBar().hide();
-        initDetsAndSources();
-    }
- */
-
-
-
-
-
-
-
-
-/*
-    private ScanViewModel scanViewModel;
-
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        scanViewModel =
-                ViewModelProviders.of(this).get(ScanViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_scan, container, false);
-        final TextView textView = root.findViewById(R.id.text_scan);
-        scanViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;
-    }
-
-
- */
 }
