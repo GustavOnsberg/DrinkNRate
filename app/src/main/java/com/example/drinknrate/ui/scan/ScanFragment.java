@@ -2,8 +2,6 @@ package com.example.drinknrate.ui.scan;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.media.AudioManager;
-import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -11,6 +9,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,9 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.drinknrate.MainActivity;
 import com.example.drinknrate.R;
-import com.example.drinknrate.ui.input.InputViewModel;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -36,6 +33,7 @@ public class ScanFragment extends Fragment {
     private CameraSource cameraSource;
     private SurfaceView surfaceView;
     private TextView barcodeText;
+    private ProgressBar progressBar;
     private String barcodeData;
 
     private int scanCounter = 0;
@@ -63,6 +61,8 @@ public class ScanFragment extends Fragment {
 
         surfaceView = root.findViewById(R.id.surface_view);
         barcodeText = root.findViewById(R.id.barcode_text);
+        progressBar = root.findViewById(R.id.progress_bar);
+        progressBar.setMax(scanTarget);
 
         initDetsAndSources();
         return root;
@@ -134,11 +134,23 @@ public class ScanFragment extends Fragment {
                 final SparseArray<Barcode> barcode = detections.getDetectedItems();
                 if (barcode.size() !=0){
 
+                    barcodeData = barcode.valueAt(0).displayValue;
+                    if(barcodeData.equals(scaned)){
+                        scanCounter++;
+                    }
+                    else{
+                        scaned = barcodeData;
+                        scanCounter = 0;
+                    }
+                    barcodeText.setText(scanCounter + " / " + scanTarget);
+
+                    progressBar.setProgress(scanCounter);
+
                     barcodeText.post(new Runnable(){
 
                         @Override
                         public void run(){
-                                barcodeData = barcode.valueAt(0).displayValue;
+                                /*barcodeData = barcode.valueAt(0).displayValue;
                                 if(barcodeData.equals(scaned)){
                                     scanCounter++;
                                 }
@@ -146,7 +158,7 @@ public class ScanFragment extends Fragment {
                                     scaned = barcodeData;
                                     scanCounter = 0;
                                 }
-                                barcodeText.setText(scanCounter + " / " + scanTarget);
+                                barcodeText.setText(scanCounter + " / " + scanTarget);*/
                             }
 
                     });

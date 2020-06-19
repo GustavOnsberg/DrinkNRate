@@ -31,6 +31,7 @@ import androidx.navigation.ui.NavigationUI;
 public class MainActivity extends AppCompatActivity {
     boolean isDrinkCreated = false;
     boolean drinkExist = false;
+    boolean buttonPressed = false;
     private static final int GALLERY_CODE = 10;
     private static final int REQUEST_CODE_CREATEDRINK = 69;
     public int drinkSelected = -1;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     //onClick methods
 
     public void sendNumber(View v){//onclick
+        buttonPressed = true;
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         isDrinkCreated = false;
         Log.i("intput", "onClick: button was clicked");
@@ -76,6 +78,14 @@ public class MainActivity extends AppCompatActivity {
 
                         isDrinkCreated = true;
                         drinkExist = true;
+                        if(buttonPressed){
+                            drinkSelected = 1;
+                            Log.i("onDataChange", "onDataChange: switch window");
+                            BottomNavigationView bottomNav = (BottomNavigationView)findViewById(R.id.nav_view);
+                            Log.i("onDataChange", "onDataChange: switch button");
+                            bottomNav.setSelectedItemId(R.id.navigation_drink);
+                            buttonPressed = false;
+                        }
                     }catch (Exception e){
                         if (isDrinkCreated == false) {
                             createNewDrinkDialog();
@@ -87,13 +97,6 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-            if (drinkExist) {
-                drinkSelected = 1;
-                Log.i("onDataChange", "onDataChange: switch window");
-                BottomNavigationView bottomNav = (BottomNavigationView)findViewById(R.id.nav_view);
-                Log.i("onDataChange", "onDataChange: switch button");
-                bottomNav.setSelectedItemId(R.id.navigation_drink);
-            }
         } else{
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Wrong input length")
@@ -164,6 +167,11 @@ public class MainActivity extends AppCompatActivity {
         } else if (requestCode == REQUEST_CODE_CREATEDRINK && resultCode == RESULT_OK && data != null) {
             Toast okResult = Toast.makeText(this,"Drink is submitted", Toast.LENGTH_SHORT);
             okResult.show();
+            Log.i("onDataChange", "onDataChange: switch window");
+            BottomNavigationView bottomNav = (BottomNavigationView)findViewById(R.id.nav_view);
+            Log.i("onDataChange", "onDataChange: switch button");
+            bottomNav.setSelectedItemId(R.id.navigation_drink);
+            buttonPressed = false;
         }
     }
 
