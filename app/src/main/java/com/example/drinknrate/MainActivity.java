@@ -47,13 +47,14 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
         //database test
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("");
+        DatabaseReference ref = database.getReference("message");
+        ref.setValue("hello world");
 
     }
 
     //onClick methods
 
-    public void sendNumber(View v){
+    public void sendNumber(View v){//onclick
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         Log.i("intput", "onClick: button was clicked");

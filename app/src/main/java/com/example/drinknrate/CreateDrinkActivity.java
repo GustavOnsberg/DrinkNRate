@@ -25,7 +25,7 @@ public class CreateDrinkActivity extends AppCompatActivity {
         barcodeDisplay.setText("The Barcode: " + barcode);
     }
 
-    public void submitDrink(View v) {
+    public void submitDrink(View v) {//onclick
         Intent data = new Intent();
         EditText description = (EditText) findViewById(R.id.editDesc);
         EditText title = (EditText) findViewById(R.id.editTitle);
