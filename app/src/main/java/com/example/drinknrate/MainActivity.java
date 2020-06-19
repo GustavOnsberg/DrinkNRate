@@ -191,4 +191,10 @@ public class MainActivity extends AppCompatActivity {
     public String getBarcodeNumber() {
         return barcodeNumber;
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isDrinkCreated = false;
+    }
 }
