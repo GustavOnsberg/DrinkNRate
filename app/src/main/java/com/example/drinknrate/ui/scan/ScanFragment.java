@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.drinknrate.MainActivity;
 import com.example.drinknrate.R;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -38,6 +39,7 @@ public class ScanFragment extends Fragment {
     private int scanCounter = 0;
     private int scanTarget = 10;
     private String scaned = "";
+    private View root;
 
 
     private static final int REQUEST_CAMERA_PERMISSION = 13;
@@ -49,7 +51,7 @@ public class ScanFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         scanViewModel =
                 ViewModelProviders.of(this).get(ScanViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_scan, container, false);
+        root = inflater.inflate(R.layout.fragment_scan, container, false);
         scanViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -135,6 +137,10 @@ public class ScanFragment extends Fragment {
                     barcodeData = barcode.valueAt(0).displayValue;
                     if(barcodeData.equals(scaned)){
                         scanCounter++;
+                        if(scanCounter == scanTarget){
+                            ((MainActivity)getActivity()).barcode = scaned;
+                            ((MainActivity)getActivity()).findDrink(root);
+                        }
                     }
                     else{
                         scaned = barcodeData;
