@@ -58,13 +58,23 @@ public class MainActivity extends AppCompatActivity {
 
     //onClick methods
 
-    public void sendNumber(View v){//onclick
+    public String barcode;
+
+    public void sendNumber(View v){
+        final EditText editText = (EditText) findViewById(R.id.inputNumber);
+        barcode = editText.getText().toString();
+        findDrink(v);
+    }
+
+    public void findDrink(View v){//onclick
         buttonPressed = true;
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         isDrinkCreated = false;
         Log.i("intput", "onClick: button was clicked");
-        final EditText editText = (EditText) findViewById(R.id.inputNumber);
-        barcodeNumber = editText.getText().toString();
+        //final EditText editText = (EditText) findViewById(R.id.inputNumber);
+        //barcodeNumber = editText.getText().toString();
+        barcodeNumber = barcode;
+
         final DatabaseReference ref = database.getReference(barcodeNumber);
         if (14 > barcodeNumber.length() && barcodeNumber.length() > 7) {
             ref.addValueEventListener(new ValueEventListener() {
@@ -114,7 +124,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void createNewDrinkDialog() {
         final EditText editText = (EditText) findViewById(R.id.inputNumber);
-        barcodeNumber = editText.getText().toString();
+        //barcodeNumber = editText.getText().toString();
+        barcodeNumber = barcode;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Create new drink?")
                 .setMessage("Please make sure the numbers are correct")
@@ -123,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         isDrinkCreated = true;
                         Intent createDrink = new Intent(getBaseContext(), CreateDrinkActivity.class);
-                        createDrink.putExtra("barNumber",editText.getText().toString());
+                        createDrink.putExtra("barNumber",barcodeNumber);
                         startActivityForResult(createDrink,REQUEST_CODE_CREATEDRINK);
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
