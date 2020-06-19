@@ -15,6 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class DialogSetDescFragment extends AppCompatDialogFragment {
     @SuppressLint("ResourceType")
     @NonNull
@@ -29,6 +32,13 @@ public class DialogSetDescFragment extends AppCompatDialogFragment {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
         );
+
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        String barcodeNumber = ((MainActivity)getActivity()).getBarcodeNumber();
+        final DatabaseReference ref = database.getReference(barcodeNumber);
+        final DatabaseReference refDesc = database.getReference(barcodeNumber.toString()+"/description");
+
         descInput.setLayoutParams(layout);
         builder.setView(descInput);
         builder.setTitle("Add Description")
@@ -53,6 +63,7 @@ public class DialogSetDescFragment extends AppCompatDialogFragment {
                     descText.setText(descInput.getText().toString());
                     getActivity().findViewById(R.id.addDescButton).setVisibility(View.GONE);
                     getActivity().findViewById(R.id.changeDesc).setVisibility(View.VISIBLE);
+                    refDesc.setValue(descInput.getText().toString()+"");
                     Toast finalMsg = Toast.makeText(getContext(),"Description is set", Toast.LENGTH_SHORT);
                     finalMsg.show();
                     dialog.dismiss();

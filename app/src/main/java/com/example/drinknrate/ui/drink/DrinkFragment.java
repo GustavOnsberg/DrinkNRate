@@ -1,6 +1,7 @@
 package com.example.drinknrate.ui.drink;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,35 +17,79 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.drinknrate.MainActivity;
 import com.example.drinknrate.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class DrinkFragment extends Fragment {
 
     private DrinkViewModel drinkViewModel;
+    private String title;
+    private String description;
+    private float rating;
+    private int totalRatings;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_drink, container, false);
-        Button setDesc = root.findViewById(R.id.addDescButton);
-        Button changeDesc = root.findViewById(R.id.changeDesc);
+
+        final Button setDesc = root.findViewById(R.id.addDescButton);
+        final Button changeDesc = root.findViewById(R.id.changeDesc);
         Button setImage = root.findViewById(R.id.addImageBtn);
-        RatingBar meanRating = root.findViewById(R.id.meanRating);
-        TextView drinkDesc = root.findViewById(R.id.drinkDesc);
-        TextView drinkName = root.findViewById(R.id.drinkName);
+        final RatingBar meanRating = root.findViewById(R.id.meanRating);
+        final TextView drinkDesc = root.findViewById(R.id.drinkDesc);
+        final TextView drinkName = root.findViewById(R.id.drinkName);
         ImageView image = root.findViewById(R.id.imageView);
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
         if (((MainActivity)getActivity()).getDrinkSelected() == -1) {
             setDesc.setVisibility(View.GONE);
             changeDesc.setVisibility(View.GONE);
             setImage.setVisibility(View.GONE);
             meanRating.setVisibility(View.GONE);
             drinkDesc.setVisibility(View.GONE);
-            drinkName.setVisibility(View.GONE);
             image.setVisibility(View.GONE);
+            drinkName.setText("No drink selected");
         } else {
-            drinkName.setText(((MainActivity)getActivity()).getBarcodeNumber());
+            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+            String barcodeNumber = ((MainActivity)getActivity()).getBarcodeNumber();
+            final DatabaseReference ref = database.getReference(barcodeNumber);
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    title = dataSnapshot.child("title").getValue().toString();
+                    description = dataSnapshot.child("description").getValue().toString();
+                    rating = Float.parseFloat(dataSnapshot.child("rating").getValue().toString());
+                    totalRatings = Integer.parseInt(dataSnapshot.child("totalRatings").getValue().toString());
+
+                    if (((MainActivity)getActivity()).getDrinkSelected() == 1) {
+                        drinkName.setText(title);
+                        if (description.length() != 0) {
+                            drinkDesc.setText(description);
+                            Log.i("description", "onDataChange: description is set");
+                            changeDesc.setVisibility(View.VISIBLE);
+                            setDesc.setVisibility(View.GONE);
+                        }
+                        meanRating.setRating(rating/totalRatings);
+                        meanRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                            @Override
+                            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                                if (meanRating.getRating() < 1) {
+                                    meanRating.setRating(1);
+                                }
+                            }
+                        });
+
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
+
         drinkViewModel =
                 ViewModelProviders.of(this).get(DrinkViewModel.class);
 

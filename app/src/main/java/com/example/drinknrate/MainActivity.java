@@ -22,7 +22,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -30,7 +29,7 @@ import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
     boolean isDrinkCreated = false;
-    boolean drinkExist = false;
+    boolean submitDrinkBtnpressed = false;
     private static final int GALLERY_CODE = 10;
     private static final int REQUEST_CODE_CREATEDRINK = 69;
     public int drinkSelected = -1;
@@ -58,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     //onClick methods
 
     public void sendNumber(View v){//onclick
+        submitDrinkBtnpressed = true;
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         isDrinkCreated = false;
         Log.i("intput", "onClick: button was clicked");
@@ -75,7 +75,10 @@ public class MainActivity extends AppCompatActivity {
 //                        Log.i("ondatachange", "onDataChange: "+title+" "+description+" "+rating);
 
                         isDrinkCreated = true;
-                        drinkExist = true;
+                        if(submitDrinkBtnpressed) {
+                            setDrinkFragment();
+                            submitDrinkBtnpressed = false;
+                        }
                     }catch (Exception e){
                         if (isDrinkCreated == false) {
                             createNewDrinkDialog();
@@ -87,13 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-            if (drinkExist) {
-                drinkSelected = 1;
-                Log.i("onDataChange", "onDataChange: switch window");
-                BottomNavigationView bottomNav = (BottomNavigationView)findViewById(R.id.nav_view);
-                Log.i("onDataChange", "onDataChange: switch button");
-                bottomNav.setSelectedItemId(R.id.navigation_drink);
-            }
+
         } else{
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Wrong input length")
@@ -108,6 +105,15 @@ public class MainActivity extends AppCompatActivity {
             dialog.show();
         }
     }
+
+    private void setDrinkFragment() {
+        drinkSelected = 1;
+        Log.i("onDataChange", "onDataChange: switch window");
+        BottomNavigationView bottomNav = (BottomNavigationView)findViewById(R.id.nav_view);
+        Log.i("onDataChange", "onDataChange: switch button");
+        bottomNav.setSelectedItemId(R.id.navigation_drink);
+    }
+
 
     private void createNewDrinkDialog() {
         final EditText editText = (EditText) findViewById(R.id.inputNumber);
@@ -164,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (requestCode == REQUEST_CODE_CREATEDRINK && resultCode == RESULT_OK && data != null) {
             Toast okResult = Toast.makeText(this,"Drink is submitted", Toast.LENGTH_SHORT);
             okResult.show();
+            setDrinkFragment();
         }
     }
 

@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -27,6 +28,15 @@ public class CreateDrinkActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         barcode = extras.getString("barNumber");
         barcodeDisplay.setText("The Barcode: " + barcode);
+        RatingBar rating = (RatingBar) findViewById(R.id.ratingBar);
+        rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                if (ratingBar.getRating() == 0.5) {
+                    ratingBar.setRating(1);
+                }
+            }
+        });
     }
 
     public void submitDrink(View v) {//onclick
