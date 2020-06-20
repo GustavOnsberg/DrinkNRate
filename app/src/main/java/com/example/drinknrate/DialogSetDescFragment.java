@@ -24,8 +24,6 @@ public class DialogSetDescFragment extends AppCompatDialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//        LayoutInflater inflater = getActivity().getLayoutInflater();
-//        builder.setView(inflater.inflate(R.layout.fragment_set_description,null))
 
         final EditText descInput = new EditText(getActivity());
         LinearLayout.LayoutParams layout = new LinearLayout.LayoutParams(
