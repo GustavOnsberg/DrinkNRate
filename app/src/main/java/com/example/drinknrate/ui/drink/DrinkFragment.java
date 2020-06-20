@@ -1,7 +1,6 @@
 package com.example.drinknrate.ui.drink;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,7 +45,6 @@ public class DrinkFragment extends Fragment {
         final TextView drinkDesc = root.findViewById(R.id.drinkDesc);
         final TextView drinkName = root.findViewById(R.id.drinkName);
         ImageView image = root.findViewById(R.id.imageView);
-        Button submitRating = root.findViewById(R.id.submitRatingBtn);
         if (((MainActivity)mContext).getDrinkSelected() == -1) {
             setDesc.setVisibility(View.GONE);
             changeDesc.setVisibility(View.GONE);
@@ -54,7 +52,6 @@ public class DrinkFragment extends Fragment {
             meanRating.setVisibility(View.GONE);
             drinkDesc.setVisibility(View.GONE);
             image.setVisibility(View.GONE);
-            submitRating.setVisibility(View.GONE);
             drinkName.setText("No drink selected");
         } else {
             final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -67,6 +64,7 @@ public class DrinkFragment extends Fragment {
                     description = dataSnapshot.child("description").getValue().toString();
                     rating = Float.parseFloat(dataSnapshot.child("rating").getValue().toString());
                     totalRatings = Integer.parseInt(dataSnapshot.child("totalRatings").getValue().toString());
+
 
                     if (((MainActivity)mContext).getDrinkSelected() == 1) {
                         drinkName.setText(title);

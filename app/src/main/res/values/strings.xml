@@ -14,5 +14,4 @@
     <string name="create_new_drink">Create new drink</string>
     <string name="no_drink_selected">No drink selected</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="submit_rating">Submit Rating</string>
 </resources>
