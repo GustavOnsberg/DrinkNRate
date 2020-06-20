@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -35,12 +34,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_CREATEDRINK = 69;
     public int drinkSelected = -1;
     public String barcodeNumber;
-    private String description;
-    private String title;
-    private float ratingValue;
-    private int totalRatingsValue;
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference ref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,37 +49,30 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
         //database test
-        ref = database.getReference(barcodeNumber.toString());
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ratingValue = Float.parseFloat(dataSnapshot.child("rating").getValue().toString());
-                totalRatingsValue = Integer.parseInt(dataSnapshot.child("totalRatings").getValue().toString());
-                title = dataSnapshot.child("title").getValue().toString();
-                description = dataSnapshot.child("description").getValue().toString();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("message");
+        ref.setValue("hello world");
     }
 
     //onClick methods
+    public String barcode;
 
     public void sendNumber(View v){
         final EditText editText = (EditText) findViewById(R.id.inputNumber);
-        barcodeNumber = editText.getText().toString();
+        barcode = editText.getText().toString();
 
         findDrink(v);
     }
 
     public void findDrink(View v){//onclick
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
         submitDrinkBtnpressed = true;
         Log.i("intput", "onClick: button was clicked");
+        //final EditText editText = (EditText) findViewById(R.id.inputNumber);
+        //barcodeNumber = editText.getText().toString();
+        barcodeNumber = barcode;
 
-        ref = database.getReference(barcodeNumber);
+        final DatabaseReference ref = database.getReference(barcodeNumber);
         if (14 > barcodeNumber.length() && barcodeNumber.length() > 7) {
             ref.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -94,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         dataSnapshot.child("title").getValue().toString();
                         String description = dataSnapshot.child("description").getValue().toString();
-                        ratingValue = Float.parseFloat(dataSnapshot.child("rating").getValue().toString());
+                        float rating = Float.parseFloat(dataSnapshot.child("rating").getValue().toString());
                        //Log.i("ondatachange", "onDataChange: "+title+" "+description+" "+rating);
 
                         //isDrinkCreated = true;
@@ -131,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void createNewDrinkDialog() {
         final EditText editText = (EditText) findViewById(R.id.inputNumber);
+        //barcodeNumber = editText.getText().toString();
+        barcodeNumber = barcode;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Create new drink?")
                 .setMessage("Please make sure the numbers are correct")
@@ -178,36 +166,6 @@ public class MainActivity extends AppCompatActivity {
         imageIntent.setType("image/*");
         imageIntent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(imageIntent,"Select Image"), GALLERY_CODE);
-    }
-
-    // HJÆLP FRA VIKTOR MED DETTE
-    //
-    //
-    //
-    //
-    //
-    public void submitRating(View v) {
-        RatingBar ratingBar = findViewById(R.id.meanRating);
-        DatabaseReference ref = database.getReference(barcodeNumber.toString());
-        DatabaseReference rating = database.getReference(barcodeNumber.toString()+"/rating");
-        DatabaseReference totalRatings = database.getReference(barcodeNumber.toString()+"/totalRatings");
-        float newRating = ratingBar.getRating() + ratingValue;
-        int newTotalRatings = totalRatingsValue++;
-        rating.setValue(newRating);
-        totalRatings.setValue(newTotalRatings);
-
-
-
-        Log.i("submit rating", "submitRating: rating is submitted");
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Rating has been submitted").setPositiveButton("OK",new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     @Override
