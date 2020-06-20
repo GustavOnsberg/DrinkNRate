@@ -29,18 +29,16 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
-    boolean isDrinkCreated = false;
-    boolean submitDrinkBtnpressed = false;
     private static final int GALLERY_CODE = 10;
     private static final int REQUEST_CODE_CREATEDRINK = 69;
     public int drinkSelected = -1;
     public String barcodeNumber;
     private String description;
-    private String title;
-    private float ratingValue;
-    private int totalRatingsValue;
+    private String title = "";
+    private float rating;
+    private int totalRatings;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference ref;
+    private DatabaseReference ref = database.getReference("");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,28 +47,33 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_input, R.id.navigation_scan, R.id.navigation_drink)
-                .build();
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(R.id.navigation_input, R.id.navigation_scan, R.id.navigation_drink).build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
         //database test
-        ref = database.getReference(barcodeNumber.toString());
+
+
+    }
+
+    public void databaseUpdate(){
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ratingValue = Float.parseFloat(dataSnapshot.child("rating").getValue().toString());
-                totalRatingsValue = Integer.parseInt(dataSnapshot.child("totalRatings").getValue().toString());
-                title = dataSnapshot.child("title").getValue().toString();
-                description = dataSnapshot.child("description").getValue().toString();
+                try {
+                    rating = Float.parseFloat(dataSnapshot.child("rating").getValue().toString());
+                    totalRatings = Integer.parseInt(dataSnapshot.child("totalRatings").getValue().toString());
+                    title = dataSnapshot.child("title").getValue().toString();
+                    description = dataSnapshot.child("description").getValue().toString();
+                }catch (Exception e){
+
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-
     }
 
     //onClick methods
@@ -83,37 +86,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void findDrink(View v){//onclick
-        submitDrinkBtnpressed = true;
         Log.i("intput", "onClick: button was clicked");
-
-        ref = database.getReference(barcodeNumber);
         if (14 > barcodeNumber.length() && barcodeNumber.length() > 7) {
-            ref.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    try {
-                        dataSnapshot.child("title").getValue().toString();
-                        String description = dataSnapshot.child("description").getValue().toString();
-                        ratingValue = Float.parseFloat(dataSnapshot.child("rating").getValue().toString());
-                       //Log.i("ondatachange", "onDataChange: "+title+" "+description+" "+rating);
+            ref = database.getReference(barcodeNumber.toString());
+            databaseUpdate();
+            if(title != ""){
+                setDrinkFragment();
+            }else{
+                createNewDrinkDialog();
+            }
 
-                        //isDrinkCreated = true;
-                        if(submitDrinkBtnpressed) {
-                            setDrinkFragment();
-                            submitDrinkBtnpressed = false;
-                            Log.i("test", "sendtetg  rsgbdetrh grthNumber: "+barcodeNumber);
-                        }
-                    }catch (Exception e){
-                        if (isDrinkCreated == false) {
-                            createNewDrinkDialog();
-                        }
-                    }
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
         } else{
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Wrong input length")
@@ -137,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("Create", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        isDrinkCreated = true;
                         Intent createDrink = new Intent(getBaseContext(), CreateDrinkActivity.class);
                         createDrink.putExtra("barNumber",barcodeNumber);
                         startActivityForResult(createDrink,REQUEST_CODE_CREATEDRINK);
@@ -191,8 +172,8 @@ public class MainActivity extends AppCompatActivity {
         DatabaseReference ref = database.getReference(barcodeNumber.toString());
         DatabaseReference rating = database.getReference(barcodeNumber.toString()+"/rating");
         DatabaseReference totalRatings = database.getReference(barcodeNumber.toString()+"/totalRatings");
-        float newRating = ratingBar.getRating() + ratingValue;
-        int newTotalRatings = totalRatingsValue++;
+        float newRating = ratingBar.getRating() + this.rating;
+        int newTotalRatings = this.totalRatings++;
         rating.setValue(newRating);
         totalRatings.setValue(newTotalRatings);
 
@@ -237,6 +218,5 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        isDrinkCreated = false;
     }
 }
