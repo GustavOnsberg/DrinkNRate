@@ -44,6 +44,7 @@ public class DrinkFragment extends Fragment {
         final RatingBar meanRating = root.findViewById(R.id.meanRating);
         final TextView drinkDesc = root.findViewById(R.id.drinkDesc);
         final TextView drinkName = root.findViewById(R.id.drinkName);
+        Button submitRatingBtn = root.findViewById(R.id.submitNewRatingBtn);
         ImageView image = root.findViewById(R.id.imageView);
         if (((MainActivity)mContext).getDrinkSelected() == -1) {
             setDesc.setVisibility(View.GONE);
@@ -52,6 +53,7 @@ public class DrinkFragment extends Fragment {
             meanRating.setVisibility(View.GONE);
             drinkDesc.setVisibility(View.GONE);
             image.setVisibility(View.GONE);
+            submitRatingBtn.setVisibility(View.GONE);
             drinkName.setText("No drink selected");
         } else {
             final FirebaseDatabase database = FirebaseDatabase.getInstance();

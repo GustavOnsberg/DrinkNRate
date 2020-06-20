@@ -148,6 +148,18 @@ public class MainActivity extends AppCompatActivity {
         bottomNav.setSelectedItemId(R.id.navigation_drink);
     }
 
+    public void submitNewRating(View v) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Rating submitted").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 
     public void setDesc(View v){
         Log.i("drink", "onClick: desc");
