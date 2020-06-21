@@ -80,8 +80,8 @@ public class DrinkFragment extends Fragment {
                             changeDesc.setVisibility(View.VISIBLE);
                             setDesc.setVisibility(View.GONE);
                         }
-                        ((MainActivity)getActivity()).setRatingValue(ratingValue);
-                        ((MainActivity)getActivity()).setTotalRatingsValue(totalRatingsValue);
+                        ((MainActivity)mContext).setRatingValue(ratingValue);
+                        ((MainActivity)mContext).setTotalRatingsValue(totalRatingsValue);
                         meanRating.setRating(rating/totalRatings);
                         meanRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                             @Override
