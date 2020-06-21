@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }catch (Exception e){
                         if (isDrinkCreated == false) {
+                            drinkSelected = -1;
                             createNewDrinkDialog();
                         }
                     }
