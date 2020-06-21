@@ -40,23 +40,11 @@ public class ScanFragment extends Fragment {
     private String scanned = "";
     private View root;
 
-
     private static final int REQUEST_CAMERA_PERMISSION = 13;
-
-
-    private ScanViewModel scanViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        scanViewModel =
-                ViewModelProviders.of(this).get(ScanViewModel.class);
         root = inflater.inflate(R.layout.fragment_scan, container, false);
-        scanViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-
-            }
-        });
 
 
         surfaceView = root.findViewById(R.id.surface_view);

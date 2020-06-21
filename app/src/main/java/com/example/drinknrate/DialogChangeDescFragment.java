@@ -18,12 +18,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class DialogChangeDescFragment extends AppCompatDialogFragment {
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final EditText descInput = new EditText(getActivity());
-        TextView desc = (TextView) getActivity().findViewById(R.id.drinkDesc);
+
+        TextView desc = getActivity().findViewById(R.id.drinkDesc);
         descInput.setText(desc.getText().toString());
         LinearLayout.LayoutParams layout = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -33,7 +35,6 @@ public class DialogChangeDescFragment extends AppCompatDialogFragment {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         String barcodeNumber = ((MainActivity)getActivity()).getBarcodeNumber();
         final DatabaseReference refDesc = database.getReference(barcodeNumber.toString()+"/description");
-
         descInput.setLayoutParams(layout);
         builder.setView(descInput);
         builder.setTitle("Change Description")
@@ -54,7 +55,7 @@ public class DialogChangeDescFragment extends AppCompatDialogFragment {
             @Override
             public void onClick(View v) {
                 if (descInput.length() <= 100) {
-                    TextView descText = (TextView) getActivity().findViewById(R.id.drinkDesc);
+                    TextView descText = getActivity().findViewById(R.id.drinkDesc);
                     descText.setText(descInput.getText().toString());
                     getActivity().findViewById(R.id.addDescButton).setVisibility(View.GONE);
                     getActivity().findViewById(R.id.changeDesc).setVisibility(View.VISIBLE);

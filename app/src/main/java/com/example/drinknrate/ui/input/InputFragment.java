@@ -20,20 +20,9 @@ import com.example.drinknrate.R;
 
 public class InputFragment extends Fragment {
 
-    private InputViewModel inputViewModel;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        inputViewModel =
-                ViewModelProviders.of(this).get(InputViewModel.class);
         View root = inflater.inflate(R.layout.fragment_input, container, false);
-        inputViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                
-            }
-        });
-
         return root;
     }
 }
