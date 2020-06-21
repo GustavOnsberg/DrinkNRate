@@ -10,7 +10,6 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,7 +37,7 @@ public class ScanFragment extends Fragment {
 
     private int scanCounter = 0;
     private int scanTarget = 10;
-    private String scaned = "";
+    private String scanned = "";
     private View root;
 
 
@@ -135,15 +134,15 @@ public class ScanFragment extends Fragment {
                 if (barcode.size() !=0){
 
                     barcodeData = barcode.valueAt(0).displayValue;
-                    if(barcodeData.equals(scaned)){
+                    if(barcodeData.equals(scanned)){
                         scanCounter++;
                         if(scanCounter == scanTarget){
-                            ((MainActivity)getActivity()).barcode = scaned;
+                            ((MainActivity)getActivity()).barcode = scanned;
                             ((MainActivity)getActivity()).findDrink(root);
                         }
                     }
                     else{
-                        scaned = barcodeData;
+                        scanned = barcodeData;
                         scanCounter = 0;
                     }
 
