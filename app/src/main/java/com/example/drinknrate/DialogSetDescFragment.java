@@ -36,7 +36,6 @@ public class DialogSetDescFragment extends AppCompatDialogFragment {
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         String barcodeNumber = ((MainActivity)getActivity()).getBarcodeNumber();
-        final DatabaseReference ref = database.getReference(barcodeNumber);
         final DatabaseReference refDesc = database.getReference(barcodeNumber.toString()+"/description");
 
         descInput.setLayoutParams(layout);

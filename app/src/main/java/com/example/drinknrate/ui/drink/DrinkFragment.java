@@ -26,7 +26,6 @@ import com.google.firebase.database.ValueEventListener;
 
 public class DrinkFragment extends Fragment {
 
-    private DrinkViewModel drinkViewModel;
     private String title;
     private String description;
     private float rating;
@@ -100,8 +99,6 @@ public class DrinkFragment extends Fragment {
                 }
             });
         }
-        drinkViewModel =
-                ViewModelProviders.of(this).get(DrinkViewModel.class);
 
         return root;
     }
