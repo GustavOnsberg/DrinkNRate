@@ -1,5 +1,6 @@
 package com.example.drinknrate;
 
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import com.example.drinknrate.ui.drink.DrinkFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -35,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_CREATEDRINK = 69;
     public int drinkSelected = -1;
     public String barcodeNumber;
-    private float ratingValue;
-    private int totalRatingsValue;
+    public float ratingValue;
+    public int totalRatingsValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,21 +160,9 @@ public class MainActivity extends AppCompatActivity {
         float newRating = ratingBar.getRating();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference(barcodeNumber.toString());
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ratingValue = Float.parseFloat(dataSnapshot.child("rating").getValue().toString());
-                totalRatingsValue = Integer.parseInt(dataSnapshot.child("totalRatings").getValue().toString());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
         DatabaseReference ratingRef = database.getReference(barcodeNumber + "/rating");
         DatabaseReference totalRatingsRef = database.getReference(barcodeNumber + "/totalRatings");
-        ratingRef.setValue(ratingValue);
-//        ratingRef.setValue(ratingValue + newRating);
+        ratingRef.setValue(ratingValue + newRating);
         totalRatingsRef.setValue(totalRatingsValue + 1);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Rating submitted").setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -226,6 +217,14 @@ public class MainActivity extends AppCompatActivity {
 
     public String getBarcodeNumber() {
         return barcodeNumber;
+    }
+
+    public void setRatingValue(float ratingValue) {
+        this.ratingValue = ratingValue;
+    }
+
+    public void setTotalRatingsValue(int totalRatingsValue) {
+        this.totalRatingsValue = totalRatingsValue;
     }
 
     @Override

@@ -32,6 +32,8 @@ public class DrinkFragment extends Fragment {
     private float rating;
     private int totalRatings;
     private Context mContext;
+    public float ratingValue;
+    public int totalRatingsValue;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -66,6 +68,8 @@ public class DrinkFragment extends Fragment {
                     description = dataSnapshot.child("description").getValue().toString();
                     rating = Float.parseFloat(dataSnapshot.child("rating").getValue().toString());
                     totalRatings = Integer.parseInt(dataSnapshot.child("totalRatings").getValue().toString());
+                    ratingValue = Float.parseFloat(dataSnapshot.child("rating").getValue().toString());
+                    totalRatingsValue = Integer.parseInt(dataSnapshot.child("totalRatings").getValue().toString());
 
 
                     if (((MainActivity)mContext).getDrinkSelected() == 1) {
@@ -76,6 +80,8 @@ public class DrinkFragment extends Fragment {
                             changeDesc.setVisibility(View.VISIBLE);
                             setDesc.setVisibility(View.GONE);
                         }
+                        ((MainActivity)getActivity()).setRatingValue(ratingValue);
+                        ((MainActivity)getActivity()).setTotalRatingsValue(totalRatingsValue);
                         meanRating.setRating(rating/totalRatings);
                         meanRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                             @Override
@@ -105,5 +111,13 @@ public class DrinkFragment extends Fragment {
         super.onAttach(context);
         mContext = context;
 
+    }
+
+    public float getRatingValue() {
+        return ratingValue;
+    }
+
+    public int getTotalRatingsValue() {
+        return totalRatingsValue;
     }
 }
