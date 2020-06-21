@@ -37,7 +37,7 @@ public class ScanFragment extends Fragment {
     private String barcodeData;
 
     private int scanCounter = 0;
-    private int scanTarget = 3;
+    private int scanTarget = 10;
     private String scaned = "";
     private View root;
 
