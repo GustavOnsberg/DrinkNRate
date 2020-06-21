@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DrinkNRate</string>
+    <string name="app_name">Rate&amp;Drink</string>
     <string name="title_activity_scanner">MainActivity</string>
     <string name="title_input">Input</string>
     <string name="title_scan">Scan</string>
@@ -15,4 +15,5 @@
     <string name="no_drink_selected">No drink selected</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="submit_rating">Submit Rating</string>
+    <string name="icon_name">RND</string>
 </resources>
