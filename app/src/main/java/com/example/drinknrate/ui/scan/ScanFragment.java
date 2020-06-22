@@ -44,15 +44,17 @@ public class ScanFragment extends Fragment {
         //sets the view as the fragment
         root = inflater.inflate(R.layout.fragment_scan, container, false);
 
+        //find views
         surfaceView = root.findViewById(R.id.surface_view);
         progressBar = root.findViewById(R.id.progress_bar);
         progressBar.setMax(scanTarget);
 
+        //Initialises detectors
         initDetsAndSources();
         return root;
     }
 
-    private void initDetsAndSources() {  // initialises detectors and sources
+    private void initDetsAndSources() {
 
         barcodeDetector = new BarcodeDetector.Builder(getActivity())
                 .setBarcodeFormats(Barcode.ALL_FORMATS)
@@ -66,31 +68,25 @@ public class ScanFragment extends Fragment {
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
-                // insures that the proper permissions have benn granted.
+                //Check for permissions
                 try {
                     if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
                         cameraSource.start(surfaceView.getHolder());
-
                     }else{
                         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
-
                     }
-
-                }catch (IOException e){
+                }
+                catch (IOException e){
                     e.printStackTrace();
                 }
-
             }
 
             @Override
-            public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
-
-            }
+            public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {}
 
             @Override
             public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
                 cameraSource.stop();
-
             }
         });
 
@@ -99,16 +95,18 @@ public class ScanFragment extends Fragment {
             public void release() {
 
             }
-
+            //Happens when scanner found something
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcode = detections.getDetectedItems();
                 if (barcode.size() !=0){
-
+                    //Get scan result
                     barcodeData = barcode.valueAt(0).displayValue;
+                    //Count equal scans in a row
                     if(barcodeData.equals(scanned)){
                         scanCounter++;
                         if(scanCounter == scanTarget){
+                            //Go to drink
                             ((MainActivity)getActivity()).barcode = scanned;
                             ((MainActivity)getActivity()).findDrink(root);
                         }
