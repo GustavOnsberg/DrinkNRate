@@ -4,10 +4,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -29,6 +27,8 @@ public class CreateDrinkActivity extends AppCompatActivity {
         barcode = extras.getString("barNumber");
         barcodeDisplay.setText("The Barcode: " + barcode);
         RatingBar rating = (RatingBar) findViewById(R.id.ratingBar);
+        //sets a listener on ratingbar
+        //makes it impossible to give a rating of 0.5, as it makes it pop up on 1
         rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
@@ -39,7 +39,8 @@ public class CreateDrinkActivity extends AppCompatActivity {
         });
     }
 
-    public void submitDrink(View v) {//onclick
+    //onClick method to submit the drink
+    public void submitDrink(View v) {
         Intent data = new Intent();
         EditText description = (EditText) findViewById(R.id.editDesc);
         EditText title = (EditText) findViewById(R.id.editTitle);
@@ -47,7 +48,6 @@ public class CreateDrinkActivity extends AppCompatActivity {
         if (title.getText().toString().length() > 0) {
             final FirebaseDatabase database = FirebaseDatabase.getInstance();
             //title
-            DatabaseReference ref = database.getReference(barcode.toString());
             DatabaseReference refTitle = database.getReference(barcode.toString()+"/title");
             refTitle.setValue(title.getText().toString()+"");
             //description
@@ -69,7 +69,6 @@ public class CreateDrinkActivity extends AppCompatActivity {
                 DatabaseReference refTotalRatings = database.getReference(barcode.toString()+"/totalRatings");
                 refTotalRatings.setValue(0);//saved as interger
             }
-            System.out.println(rating.getRating());
             setResult(Activity.RESULT_OK,data);
             finish();
         } else {

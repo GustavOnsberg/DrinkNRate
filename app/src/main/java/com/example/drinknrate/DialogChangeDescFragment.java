@@ -21,17 +21,17 @@ public class DialogChangeDescFragment extends AppCompatDialogFragment {
 
     @NonNull
     @Override
+    //creates a dialog from a dialogfragment
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final EditText descInput = new EditText(getActivity());
-
         TextView desc = getActivity().findViewById(R.id.drinkDesc);
         descInput.setText(desc.getText().toString());
+        //sets up a linear layout with layout params that matches the parent
         LinearLayout.LayoutParams layout = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
         );
-
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         String barcodeNumber = ((MainActivity)getActivity()).getBarcodeNumber();
         final DatabaseReference refDesc = database.getReference(barcodeNumber.toString()+"/description");
@@ -54,6 +54,8 @@ public class DialogChangeDescFragment extends AppCompatDialogFragment {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //checks if the description is less than 100 characters
+                //this choice is made, as a max of 100 looks the best on the fragment_drink description
                 if (descInput.length() <= 100) {
                     TextView descText = getActivity().findViewById(R.id.drinkDesc);
                     descText.setText(descInput.getText().toString());

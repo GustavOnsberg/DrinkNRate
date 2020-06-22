@@ -12,11 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.example.drinknrate.MainActivity;
 import com.example.drinknrate.R;
@@ -44,8 +41,8 @@ public class ScanFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        //sets the view as the fragment
         root = inflater.inflate(R.layout.fragment_scan, container, false);
-
 
         surfaceView = root.findViewById(R.id.surface_view);
         progressBar = root.findViewById(R.id.progress_bar);
@@ -54,19 +51,6 @@ public class ScanFragment extends Fragment {
         initDetsAndSources();
         return root;
     }
-/*
-    public void onCreate (Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        //surfaceView = getActivity().findViewById(R.id.surface_view);
-        //barcodeText = getActivity().findViewById(R.id.barcode_text);
-
-        surfaceView = getView().findViewById(R.id.surface_view);
-        barcodeText = getView().findViewById(R.id.barcode_text);
-
-        initDetsAndSources();
-
-    }*/
 
     private void initDetsAndSources() {  // initialises detectors and sources
 

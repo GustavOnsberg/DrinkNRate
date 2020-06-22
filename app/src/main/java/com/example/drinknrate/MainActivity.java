@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     public String barcodeNumber;
     public float ratingValue;
     public int totalRatingsValue;
+    public String barcode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,28 +52,23 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-        //database test
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("message");
-        ref.setValue("hello world");
     }
 
-    //onClick methods
-    public String barcode;
-
+    //sends the barcode to findDrink method
     public void sendNumber(View v){
         final EditText editText = (EditText) findViewById(R.id.inputNumber);
         barcode = editText.getText().toString();
-
         findDrink(v);
     }
 
+
+    //checks if drink is in database
+    //if it is, it sets the drink fragment
+    //if it isnt, it calls the createNewDrinkDialog method
     public void findDrink(View v){//onclick
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         submitDrinkBtnpressed = true;
         Log.i("intput", "onClick: button was clicked");
-        //final EditText editText = (EditText) findViewById(R.id.inputNumber);
-        //barcodeNumber = editText.getText().toString();
         barcodeNumber = barcode;
 
         final DatabaseReference ref = database.getReference(barcodeNumber);
@@ -82,15 +78,10 @@ public class MainActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     try {
                         dataSnapshot.child("title").getValue().toString();
-                        String description = dataSnapshot.child("description").getValue().toString();
-                        float rating = Float.parseFloat(dataSnapshot.child("rating").getValue().toString());
-                       //Log.i("ondatachange", "onDataChange: "+title+" "+description+" "+rating);
-
-                        //isDrinkCreated = true;
                         if(submitDrinkBtnpressed) {
                             setDrinkFragment();
                             submitDrinkBtnpressed = false;
-                            Log.i("test", "sendtetg  rsgbdetrh grthNumber: "+barcodeNumber);
+                            Log.i("submitDrinkBtnPressed", "button pressed: "+barcodeNumber);
                         }
                     }catch (Exception e){
                         if (isDrinkCreated == false) {
@@ -119,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //creates the dialog to ask if user wants to create a new drink
     private void createNewDrinkDialog() {
         final EditText editText = findViewById(R.id.inputNumber);
         //barcodeNumber = editText.getText().toString();
@@ -144,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    //sets the drink fragment with the selected drink
     private void setDrinkFragment() {
         drinkSelected = 1;
         Log.i("onDataChange", "onDataChange: switch window");
@@ -152,11 +145,12 @@ public class MainActivity extends AppCompatActivity {
         bottomNav.setSelectedItemId(R.id.navigation_drink);
     }
 
+    //sets new rating on button click
     public void submitNewRating(View v) {
         RatingBar ratingBar = findViewById(R.id.meanRating);
         float newRating = ratingBar.getRating();
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference(barcodeNumber.toString());
         DatabaseReference ratingRef = database.getReference(barcodeNumber + "/rating");
         DatabaseReference totalRatingsRef = database.getReference(barcodeNumber + "/totalRatings");
         ratingRef.setValue(ratingValue + newRating);
@@ -168,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-
+        //removes the button after rating has been submitted
         Button submitBtn = findViewById(R.id.submitNewRatingBtn);
         submitBtn.setVisibility(View.GONE);
         ratingBar.setIsIndicator(true);
@@ -176,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
-
+    //set dialog fragments for set and change descriptions
     public void setDesc(View v){
         Log.i("drink", "onClick: desc");
         DialogSetDescFragment dialogSetDescFragment = new DialogSetDescFragment();
@@ -199,12 +193,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        //checks if gallery can be accessed
         if (requestCode == GALLERY_CODE && resultCode == RESULT_OK && data != null) {
             Uri image = data.getData();
             ImageView imageView = findViewById(R.id.imageView);
             imageView.setImageURI(image);
             Button imageSelect = findViewById(R.id.addImageBtn);
             imageSelect.setVisibility(View.GONE);
+
+         //checks if drink has been created succesfully
         } else if (requestCode == REQUEST_CODE_CREATEDRINK && resultCode == RESULT_OK && data != null) {
             Toast okResult = Toast.makeText(this,"Drink is submitted", Toast.LENGTH_SHORT);
             okResult.show();

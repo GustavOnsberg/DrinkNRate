@@ -13,8 +13,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.example.drinknrate.MainActivity;
 import com.example.drinknrate.R;
@@ -37,8 +35,9 @@ public class DrinkFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, final Bundle savedInstanceState) {
+        //sets the view as the fragment
         View root = inflater.inflate(R.layout.fragment_drink, container, false);
-
+        //sets up all the different elements
         final Button setDesc = root.findViewById(R.id.addDescButton);
         final Button changeDesc = root.findViewById(R.id.changeDesc);
         Button setImage = root.findViewById(R.id.addImageBtn);
@@ -47,6 +46,8 @@ public class DrinkFragment extends Fragment {
         final TextView drinkName = root.findViewById(R.id.drinkName);
         Button submitRatingBtn = root.findViewById(R.id.submitNewRatingBtn);
         ImageView image = root.findViewById(R.id.imageView);
+        //checks if a drink has been selected (-1 = has not)
+        //if drink isnt selected, all elements visibilty is sat to GONE
         if (((MainActivity)mContext).getDrinkSelected() == -1) {
             setDesc.setVisibility(View.GONE);
             changeDesc.setVisibility(View.GONE);
@@ -60,6 +61,7 @@ public class DrinkFragment extends Fragment {
             final FirebaseDatabase database = FirebaseDatabase.getInstance();
             String barcodeNumber = ((MainActivity)getActivity()).getBarcodeNumber();
             final DatabaseReference ref = database.getReference(barcodeNumber);
+            //onDataChange gets all the values from the database and adds them to the correct elements
             ref.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -108,13 +110,5 @@ public class DrinkFragment extends Fragment {
         super.onAttach(context);
         mContext = context;
 
-    }
-
-    public float getRatingValue() {
-        return ratingValue;
-    }
-
-    public int getTotalRatingsValue() {
-        return totalRatingsValue;
     }
 }
